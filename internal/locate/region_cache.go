@@ -41,6 +41,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"runtime/debug"
 	"slices"
 	"sort"
 	"strconv"
@@ -3519,6 +3520,7 @@ func (c *RegionCache) getStoreOrInsertDefault(id uint64) *Store {
 
 func (c *RegionCache) putStore(store *Store) {
 	c.storeMu.Lock()
+	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug putStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
 	c.storeMu.stores[store.storeID] = store
 	c.storeMu.Unlock()
 }
