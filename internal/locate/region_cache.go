@@ -3503,7 +3503,9 @@ func (c *RegionCache) fetchAllStores(ctx context.Context) ([]*metapb.Store, erro
 func (c *RegionCache) getStore(id uint64) (store *Store, exists bool) {
 	c.storeMu.RLock()
 	store, exists = c.storeMu.stores[id]
-	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
+	if store != nil {
+		logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
+	}
 	c.storeMu.RUnlock()
 	return
 }
@@ -3522,7 +3524,9 @@ func (c *RegionCache) getStoreOrInsertDefault(id uint64) *Store {
 
 func (c *RegionCache) putStore(store *Store) {
 	c.storeMu.Lock()
-	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug putStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
+	if store != nil {
+		logutil.BgLogger().Info(fmt.Sprintf("xzxdebug putStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
+	}
 	c.storeMu.stores[store.storeID] = store
 	c.storeMu.Unlock()
 }
