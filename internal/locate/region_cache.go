@@ -3503,9 +3503,9 @@ func (c *RegionCache) fetchAllStores(ctx context.Context) ([]*metapb.Store, erro
 func (c *RegionCache) getStore(id uint64) (store *Store, exists bool) {
 	c.storeMu.RLock()
 	store, exists = c.storeMu.stores[id]
-	if store != nil {
-		logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
-	}
+	// if store != nil {
+	// 	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
+	// }
 	c.storeMu.RUnlock()
 	return
 }
