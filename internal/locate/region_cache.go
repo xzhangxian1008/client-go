@@ -3503,6 +3503,7 @@ func (c *RegionCache) fetchAllStores(ctx context.Context) ([]*metapb.Store, erro
 func (c *RegionCache) getStore(id uint64) (store *Store, exists bool) {
 	c.storeMu.RLock()
 	store, exists = c.storeMu.stores[id]
+	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStore, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
 	c.storeMu.RUnlock()
 	return
 }
@@ -3513,6 +3514,7 @@ func (c *RegionCache) getStoreOrInsertDefault(id uint64) *Store {
 	if !exists {
 		store = newUninitializedStore(id)
 		c.storeMu.stores[id] = store
+		logutil.BgLogger().Info(fmt.Sprintf("xzxdebug getStoreOrInsertDefault, stack: %s", string(debug.Stack())), zap.String("address", store.addr))
 	}
 	c.storeMu.Unlock()
 	return store
@@ -3527,6 +3529,7 @@ func (c *RegionCache) putStore(store *Store) {
 
 func (c *RegionCache) clearStores() {
 	c.storeMu.Lock()
+	logutil.BgLogger().Info(fmt.Sprintf("xzxdebug clearStores, stack: %s", string(debug.Stack())))
 	c.storeMu.stores = make(map[uint64]*Store)
 	c.storeMu.Unlock()
 }
